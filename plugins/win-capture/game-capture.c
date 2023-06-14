@@ -1816,6 +1816,15 @@ static void game_capture_tick(void *data, float seconds)
 	bool deactivate = os_atomic_set_bool(&gc->deactivate_hook, false);
 	bool activate_now = os_atomic_set_bool(&gc->activate_hook_now, false);
 
+	if (gc->config.mode == CAPTURE_MODE_ANY) {
+		DWORD foreground_process_id;
+		GetWindowThreadProcessId(GetForegroundWindow(),
+					 &foreground_process_id);
+		if (gc->process_id != foreground_process_id) {
+			deactivate = true;
+		}
+	}
+
 	if (activate_now) {
 		HWND hwnd = (HWND)(uintptr_t)os_atomic_load_long(
 			&gc->hotkey_window);
