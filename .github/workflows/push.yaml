@@ -5,6 +5,7 @@ on:
     paths-ignore:
       - '**.md'
     branches:
+      - create-artifacts
       - master
       - 'release/**'
     tags:
